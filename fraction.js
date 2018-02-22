@@ -94,21 +94,34 @@ function approxFrac(){
   document.getElementById("frac").innerHTML = "";
   var strnum = document.getElementById("num").value
   
-  if(!strnum.match(/^\d+(\.\d+)?$/)){
+  if(!strnum.match(/^\d+(\.(\d+|\d*\(\d+\)))?$/)){
     addLine(0,1,0);
     addContLine("[0]");
     return;
   }
   strnum=remLeadZero(strnum);
+  var lb = strnum.indexOf("(");
+  var rep = "0";
+  var den9 = "";
+  if(lb!=-1){
+    rep = strnum.substr(lb+1,strnum.length-lb-2);
+    for(var i=0; i<rep.length; i++){ den9+="9"; }    
+    strnum = strnum.substr(0,lb);
+  }
   var dot = strnum.indexOf(".");
   var pow = strnum.length-dot;
   if(dot==-1){ pow=1; }
   else{ strnum = remLeadZero(strnum.substr(0,dot)+strnum.substr(dot+1)); }
   var pow10 = "1";
-  for(var i=1;i<pow;i++){ pow10+="0" }
-  
+  for(var i=1;i<pow;i++){ pow10+="0"; den9+="0"; }
   var a=strnum;
   var b=pow10;
+  if(lb!=-1){
+    a = addStrInt(mulStrInt(a,den9),mulStrInt(rep,b));
+    b = mulStrInt(b,den9);
+  }
+  
+  
   var contFrac = [];
   var fract;
   do{
