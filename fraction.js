@@ -92,7 +92,7 @@ function addContLine(contFrac){
 
 function approxFrac(){
   document.getElementById("frac").innerHTML = "";
-  var strnum = document.getElementById("num").value
+  var strnum = document.getElementById("num").value;
   
   if(!strnum.match(/^\d+(\.(\d+|\d*\(\d+\)))?$/)){
     addLine(0,1,0);

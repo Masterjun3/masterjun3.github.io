@@ -18,6 +18,10 @@ body {
 div.div1 {
   text-align: center;
 }
+div.title {
+  text-align: center;
+  background-color: #C0C0FF
+}
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -25,8 +29,12 @@ div.div1 {
 </head>
 <body onload="approxFrac(); document.getElementById('num').focus();">
 <a href=".">&lt Back</a><br>
+<div class="title">
+<h2>Decimal to Fraction Approximation</h2>
+</div>
+<hr>
 <div class="div1">
-<h2>Enter Decimal:</h2>
+<h3>Enter Decimal:</h3>
 <p style='text-align: left; margin-bottom: -22px;'>e.g. <b style="font-family: monospace;">1.84(92)</b></p>
 <input id="num" type="text" oninput="approxFrac();"><br><br>
 <div style='overflow: auto; padding: 5px; font-family: monospace; font-size: 10pt; text-align: left; margin-bottom: -26px; color: #60C0C0; user-select: none;'>Continued Fraction:</div>

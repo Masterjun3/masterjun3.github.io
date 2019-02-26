@@ -1,0 +1,64 @@
+<html>
+<head>
+<link rel="shortcut icon" type="image/png" href="favicon.png"/>
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(#87CEEB, #FFE0B2);
+  background-repeat: no-repeat;
+  background-color: #FFE0B2;
+  background-size: 100% 1000px;
+  margin: auto;
+  max-width: 700px;
+  padding: 10px 10px;
+  border-left: 1px solid #C0C0C0;
+  border-right: 1px solid #C0C0C0;
+  font-size: 16px;
+}
+div.div1 {
+  text-align: center;
+}
+div.title {
+  text-align: center;
+  background-color: #C0C0FF
+}
+#res {
+  overflow-wrap: break-word;
+}
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Masterjun | Base</title>
+</head>
+<body onload="document.getElementById('num').focus();">
+<a href=".">&lt Back</a><br>
+<div class="title">
+<h2>Number Base Conversion</h2>
+</div>
+<hr>
+<div class="div1">
+<p>
+Number:
+<input id="num" type="text" oninput="convert();">
+</p>
+<p>
+<input id="cbase" type="checkbox" onclick="convert()">
+From Base:
+<input id="base1" type="text" oninput="convert();" disabled value="10">
+</p>
+<p>
+<input id="calph" type="checkbox" onclick="convert()">
+Alphabet:
+<input id="alph" type="text" oninput="convert();" disabled value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ">
+</p>
+<hr>
+<p>
+Into Base:
+<input id="base2" type="text" oninput="convert();" value="16">
+</p>
+<div id='res' style='overflow: auto; padding: 5px; font-family: monospace; font-size: 10pt;'>0</div>
+</div>
+<script src="BigInteger.min.js"></script>
+<script src="base.js"></script>
+</body>
+</html>
