@@ -15,12 +15,9 @@ function convert(){
   var strbase2 = document.getElementById("base2").value;
   
   try{
-    var res = bigInt(strnum,strbase1,stralph).toString(strbase2,stralph);
-    if(res.length>=100000){
-      document.getElementById("res").innerHTML = "Output length: "+res.length;
-    }else{
-      document.getElementById("res").innerHTML = bigInt(strnum,strbase1,stralph).toString(strbase2,stralph);
-    }
+    var cur = bigInt(strnum,strbase1,stralph);
+    if(strbase2=="1" && cur.compare(1000)==1){ throw "Base 1 is a bad idea for big numbers"; }
+    document.getElementById("res").innerHTML = cur.toString(strbase2,stralph);
   }catch(error){
     document.getElementById("res").innerHTML = error;
   }
