@@ -16,41 +16,39 @@ body {
   font-size: 16px;
 }
 div.title {
-  overflow: auto;
-  display: table;
-}
-h1 {
-  display: table-cell;
-  vertical-align: middle;
-}
-div.div1 {
   text-align: center;
-  font-size: 24px;
+  background-color: #C0C0FF
 }
-a {
+#code {
+  font-family: monospace;
+  background-color: #F0F0F0;
+  width: 100%;
+  height: 57px;
+  resize: none;
 }
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Masterjun</title>
+<title>Masterjun | Lua</title>
 </head>
-<body>
-<br>
+<body onload="run();">
+<a href=".">&lt Back</a><br>
 <div class="title">
-<img src="masterjun.gif" width="123" height="123" style='float:left; padding-right:10'>
-<h1>Masterjun</h1>
+<h2>Lua</h2>
 </div>
 <hr>
-<div class="div1">
-<br>
-<a href="fraction.html">Decimal to Fraction Approximation</a><br><br>
-<a href="base.html">Number Base Conversion</a><br><br>
-<a href="Lua.html">Lua</a><br><br>
+<div class="code">
+<textarea id="code" oninput="run();">
+print("hi")
+</textarea>
 </div>
 <hr>
-<div class="div2">
-<br>
-<a href="DeSmuME.html">DeSmuME</a><br><br>
+<div>
+<code id="out">
+hi
+</code>
 </div>
 </body>
+<script src="Lua.js"></script>
+<script src="fengari-web.js"></script>
 </html>
