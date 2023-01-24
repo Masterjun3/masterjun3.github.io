@@ -2,7 +2,7 @@ import { Entity } from "../Entity.js";
 import { Speed } from "../Component/Speed.js";
 import { Transform } from "../Component/Transform.js";
 import { Input } from "../Component/Input.js";
-import { Hitbox } from "../Component/Hitbox.js";
+import { Hitbox } from "../Component/Hitboxx.js";
 import { Jump } from "../Component/Jump.js";
 import { Collision } from "../Component/Collision.js";
 import { Direction } from "../Direction.js";

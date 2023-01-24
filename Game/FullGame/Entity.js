@@ -1,6 +1,6 @@
 import { Collision } from "./Component/Collision.js";
 import { Gravity } from "./Component/Gravity.js";
-import { Hitbox } from "./Component/Hitbox.js";
+import { Hitbox } from "./Component/Hitboxx.js";
 import { Input } from "./Component/Input.js";
 import { Jump } from "./Component/Jump.js";
 import { Speed } from "./Component/Speed.js";

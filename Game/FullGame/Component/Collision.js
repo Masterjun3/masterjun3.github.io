@@ -1,6 +1,6 @@
 import { Component } from "../Component.js";
 import { Direction } from "../Direction.js";
-import { Hitbox } from "./Hitbox.js";
+import { Hitbox } from "./Hitboxx.js";
 import { Jump } from "./Jump.js";
 import { Speed } from "./Speed.js";
 import { Transform } from "./Transform.js";

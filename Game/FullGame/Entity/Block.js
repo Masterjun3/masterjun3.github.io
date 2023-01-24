@@ -1,4 +1,4 @@
-import { Hitbox } from "../Component/Hitbox.js";
+import { Hitbox } from "../Component/Hitboxx.js";
 import { Texture } from "../Component/Texture.js";
 import { Transform } from "../Component/Transform.js";
 import { Entity } from "../Entity.js";

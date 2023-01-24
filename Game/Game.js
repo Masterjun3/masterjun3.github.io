@@ -1,4 +1,4 @@
-import { Hitbox } from "./FullGame/Component/Hitbox.js";
+import { Hitbox } from "./FullGame/Component/Hitboxx.js";
 import { Texture } from "./FullGame/Component/Texture.js";
 import { Transform } from "./FullGame/Component/Transform.js";
 import { Block } from "./FullGame/Entity/Block.js";
