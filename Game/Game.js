@@ -63,9 +63,9 @@ class PianoRoll {
         this.input.action = false;
         this.rewind = false;
         for (let touch of e.touches) {
-            console.log(touch.clientX);
-            let x = touch.clientX / this.canvas.getBoundingClientRect().width;
-            let y = touch.clientY / this.canvas.getBoundingClientRect().height;
+            let rect = this.canvas.getBoundingClientRect();
+            let x = (touch.clientX - rect.left) / rect.width;
+            let y = (touch.clientY - rect.top) / rect.height;
             if (x < (1 / 3)) {
                 this.input.left = true;
                 continue;
