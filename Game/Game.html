@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Game" />
+        <meta property="og:site_name" content="Game" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://masterjun3.github.io/Game/Game.html" />
+        <meta property="og:image" content="https://masterjun3.github.io/Game/favicon.png" />
+        <meta property="og:description" content="Game" />
+        <title>Game</title>
+        <link rel="icon" type="image/png" href="./favicon.png">
+    </head>
+    <body style="background-color: rgb(64, 95, 153); margin: 0; height: 100vh;">
+        <img id="player" src="Assets/player.png" style="display: none;">
+        <img id="obstacle" src="Assets/obstacle.png" style="display: none;">
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+            <canvas id="canvas" width="768" height="512" style="max-width: 100%; border: 1px solid black; border-radius: 10px;"></canvas>
+        </div>
+        <script type="module" src="./Game.js"></script>
+    </body>
+</html>
