@@ -1,43 +1,168 @@
 <html>
+
 <head>
-<link rel="shortcut icon" type="image/png" href="favicon.png"/>
-<style>
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(#87CEEB, #FFE0B2);
-  background-repeat: no-repeat;
-  background-color: #FFE0B2;
-  background-size: 100% 1000px;
-  margin: auto;
-  max-width: 700px;
-  padding: 10px 10px;
-  border-left: 1px solid #C0C0C0;
-  border-right: 1px solid #C0C0C0;
-  font-size: 16px;
-}
-div.div1 {
-  text-align: center;
-}
-</style>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Masterjun | Open Graph Tests</title>
-<meta property="og:site_name" content="TASVideos" />
-<meta property="og:title" content="Cool Tests" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://masterjun3.github.io/opengraphtests.html" />
-<meta property="og:image" content="https://i.imgur.com/cayKqja.png" />
-<meta property="og:description" content="You're currently reading the open graph description of this website. I wondered how much text I can put in here, so let me tell you a little story. Once upon a time, in a small town nestled in the mountains, there lived a young woman named Emily. Emily was a talented web developer, always tinkering with code and experimenting with new technologies. One day, while browsing the internet, she stumbled upon a new technology called the Open Graph protocol. Intrigued, Emily began to research the protocol and its potential uses. She discovered that it allowed website owners to control how their pages were shared on social media, giving them the power to create rich, engaging previews that would entice users to click through and explore their content. Excited by the possibilities, Emily decided to implement the Open Graph protocol on her own website. She spent hours poring over the documentation, tweaking her code, and testing her changes. Finally, after much trial and error, Emily succeeded in creating a beautiful, eye-catching preview for her website. She shared it on social media, and within minutes, she began to see a flood of clicks and visits to her site. As time went on, Emily's use of the Open Graph protocol became more sophisticated. She added new tags and metadata to her pages, fine-tuning the way they were shared and viewed across different platforms. She began to see the benefits of the protocol not just in terms of increased traffic, but also in improved engagement and user satisfaction. Word of Emily's success quickly spread throughout the web development community, and soon other developers began to adopt the Open Graph protocol for their own projects. As the protocol became more widely used, it began to evolve and grow, with new features and capabilities being added all the time. Years later, Emily looked back on her early experiments with the Open Graph protocol with pride. She knew that her work had helped to shape the future of web development, and that her contributions had made the internet a better, more engaging place for everyone." />
-<link type="application/json+oembed" href="#embedded-json" />
+  <link rel="shortcut icon" type="image/png" href="favicon.png" />
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(#87CEEB, #FFE0B2);
+      background-repeat: no-repeat;
+      background-color: #FFE0B2;
+      background-size: 100% 1000px;
+      margin: auto;
+      max-width: 700px;
+      padding: 10px 10px;
+      border-left: 1px solid #C0C0C0;
+      border-right: 1px solid #C0C0C0;
+      font-size: 16px;
+    }
+
+    div.div1 {
+      text-align: center;
+    }
+  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Masterjun | Open Graph Tests</title>
+  <meta property="og:site_name" content="TASVideos" />
+  <meta property="og:title" content="Post by Masterjun" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://masterjun3.github.io/opengraphtests.html" />
+  <meta property="og:image" content="https://i.imgur.com/xljvuh5.png" />
+  <meta property="og:description"
+    content="Encoders' corner → [Guide] Creating a quick HD encode in BizHawk" />
 </head>
+
 <body>
-<script type="application/json+oembed" id="embedded-json">
-  {"title":"TitleField","author_name":"AuthorNameField","author_url":"https://discordapp.com","provider_name":"ProviderNameField","provider_url":"https://discordapp.com"}
-</script>
-<a href=".">&lt Back</a><br>
-<div class="div1">
-<h1>Open Graph Tests</h1>
-<h2>This is simply a test!</h2>
-</div>
+  <a href=".">&lt Back</a><br>
+  <div class="div1">
+    <h1>Open Graph Tests</h1>
+    <table>
+      <tr>
+        <td><span>Site Name:</span></td>
+        <td><input id="input_sitename" oninput="change()" style="width: 63.5ch;" /></td>
+      </tr>
+      <tr>
+        <td><span>Title:</span></td>
+        <td><input id="input_title" oninput="change()" style="width: 63.5ch;" /></td>
+      </tr>
+      <tr>
+        <td><span>Description:</span></td>
+        <td><textarea id="input_description" oninput="change()" cols="60" rows="6"></textarea></td>
+      </tr>
+      <tr>
+        <td><span>Image:</span></td>
+        <td><input id="input_image" oninput="change()" style="width: 63.5ch;" /></td>
+      </tr>
+    </table>
+    <style>
+      .container {
+        background-color: #313338;
+        padding: 78px;
+      }
+
+      .grid {
+        text-align: left;
+        display: grid;
+        padding: .5rem 1rem 1rem .75rem;
+        color: rgb(219, 222, 225);
+        background-color: rgb(43, 45, 49);
+        max-width: 516px;
+        border-radius: 4px;
+      }
+
+      .gridelement {
+        margin-top: 8px;
+      }
+
+      .sitename {
+        grid-column: 1/1;
+        font-size: 0.75rem;
+        font-weight: 400;
+      }
+
+      .title {
+        grid-column: 1/1;
+        color: rgb(0, 168, 252);
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .title:not(:hover) {
+        text-decoration: none;
+      }
+
+      .description {
+        grid-column: 1/1;
+        font-size: 0.875rem;
+        font-weight: 400;
+      }
+
+      .image {
+        grid-row: 1/8;
+        grid-column: 2/2;
+        margin-left: 16px;
+      }
+    </style>
+    <div class="container">
+      <div class="grid">
+        <div class="gridelement sitename"><span id="sitename"></span></div>
+        <div class="gridelement"><a class="title" href="#" id="title"></a></div>
+        <div class="gridelement description"><span id="description"></span></div>
+        <div class="gridelement image"><img style="width: 80px; cursor: pointer;" id="image" /></div>
+      </div>
+    </div>
+    <script>
+      let input_sitename = document.getElementById('input_sitename');
+      let input_title = document.getElementById('input_title');
+      let input_description = document.getElementById('input_description');
+      let input_image = document.getElementById('input_image');
+      let sitename = document.getElementById('sitename');
+      let title = document.getElementById('title');
+      let description = document.getElementById('description');
+      let image = document.getElementById('image');
+      function toBase64(s) {
+        return btoa(Array.from(new TextEncoder().encode(s), (x) => String.fromCodePoint(x)).join("")).replaceAll("=", "").replaceAll("+", "-").replaceAll("/", "_");
+      }
+      function fromBase64(s) {
+        return new TextDecoder().decode(Uint8Array.from(atob(s.replaceAll("-", "+").replaceAll("_", "/")), (m) => m.codePointAt(0)));
+      }
+      function change() {
+        sitename.innerText = input_sitename.value;
+        title.innerText = input_title.value;
+        description.innerText = input_description.value;
+        image.src = input_image.value;
+        if (title.innerText.length > 60) {
+          title.innerText = title.innerText.substring(0, 60 - 3) + "...";
+        }
+        if (description.innerText.length > 350) {
+          description.innerText = description.innerText.substring(0, 350 - 3) + "...";
+        }
+        let query = [input_sitename.value, input_title.value, input_description.value, input_image.value];
+        let url = new URL(window.location);
+        url.searchParams.set("q", toBase64(JSON.stringify(query)));
+        window.history.replaceState({}, null, url);
+      }
+      function fill() {
+        let url = new URL(window.location);
+        let q = url.searchParams.get("q");
+        if (q) {
+          query = JSON.parse(fromBase64(q));
+          input_sitename.value = query[0];
+          input_title.value = query[1];
+          input_description.value = query[2];
+          input_image.value = query[3];
+        } else {
+          input_sitename.value = "TASVideos";
+          input_title.value = "Post by Masterjun";
+          input_description.value = "Encoders' corner → [Guide] Creating a quick HD encode in BizHawk";
+          input_image.value = "https://i.imgur.com/xljvuh5.png";
+        }
+        change();
+      }
+      fill();
+    </script>
+  </div>
 </body>
+
 </html>
