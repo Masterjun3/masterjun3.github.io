@@ -1,0 +1,32 @@
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" gradientTransform="rotate(90)">
+      <stop offset="0%"  stop-color="#77A8DB" />
+      <stop offset="100%" stop-color="#5586B8" />
+    </linearGradient>
+    <mask id="mask1">
+        <rect x="0" y="0" width="500" height="203" fill="#000000" />
+        <rect x="0" y="203" width="500" height="297" fill="#FFFFFF" />
+    </mask>
+    <mask id="mask2">
+        <rect x="0" y="0" width="500" height="500" fill="#FFFFFF" />
+        <rect x="0" y="163" width="500" height="337" fill="#000000" />
+        <ellipse cx="167" cy="173" rx="65" ry="60" fill="#000000" />
+    </mask>
+    <mask id="mask3">
+        <rect x="0" y="0" width="500" height="163" fill="#FFFFFF" />
+        <rect x="0" y="163" width="500" height="337" fill="#000000" />
+        <ellipse cx="333" cy="173" rx="65" ry="60" fill="#000000" />
+    </mask>
+  </defs>
+  <ellipse cx="250" cy="250" rx="247" ry="240" fill="#000000" />
+  <ellipse cx="250" cy="250" rx="240" ry="234" fill="url(#grad)" />
+  <ellipse cx="250" cy="220" rx="198" ry="220" mask="url(#mask1)" />
+  <ellipse cx="250" cy="220" rx="192" ry="212" fill="#FFFFFF" mask="url(#mask1)" />
+  <rect x="52" y="202" width="396" height="8" fill="#000000" />
+  <rect x="118" y="205" width="8" height="178" fill="#000000" />
+  <rect x="374" y="205" width="8" height="178" fill="#000000" />
+  <rect x="246" y="205" width="8" height="230" fill="#000000" />
+  <ellipse cx="167" cy="167" rx="65" ry="65" mask="url(#mask2)" />
+  <ellipse cx="333" cy="167" rx="65" ry="65" mask="url(#mask3)" />
+</svg>
