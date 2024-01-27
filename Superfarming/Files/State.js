@@ -1,9 +1,12 @@
 import { InputState } from "./InputState.js";
+import { SoundEffect } from "./SoundEffect.js";
 export class State {
     constructor() {
         this.entities = [];
         this.history = [];
         this.inputHistory = [];
+        this.audio_treasurespawns = [new SoundEffect("Assets/treasurespawn_1.wav", 10, 0.3), new SoundEffect("Assets/treasurespawn_2.wav", 10, 0.3), new SoundEffect("Assets/treasurespawn_3.wav", 10, 0.3)];
+        this.audio_treasureget = new SoundEffect("Assets/treasureget.wav", 10, 0.02);
     }
     get CurrentFrame() {
         return this.history.length - 1;

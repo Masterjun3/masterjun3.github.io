@@ -1,3 +1,4 @@
+import { BringTowards } from "./Files/Component/BringTowards.js";
 import { Texture } from "./Files/Component/Texture.js";
 import { Transform } from "./Files/Component/Transform.js";
 import { Farmer } from "./Files/Entity/Farmer.js";
@@ -131,6 +132,12 @@ class PianoRoll {
         this.context.fillText("Right-click: (S)pot for digging", 10, 60);
         this.context.fillText("Middle-click: (F)armer", 10, 80);
         this.context.fillText("(T)reasure", 10, 110);
+        let money = 0;
+        for (let component of this.state.GetComponents(BringTowards)) {
+            money += component.money;
+        }
+        this.context.font = "18px sans-serif";
+        this.context.fillText(`Money: $${money}`, 10, 140);
         // for (let y = 0; y < 20; y++) {
         //     for (let x = 0; x < 20; x++) {
         //         this.context.fillText(String(x+y), 20+x*16, 20+y*16);
@@ -140,6 +147,7 @@ class PianoRoll {
         let yoff = 16;
         let scale = 29;
         this.context.fillStyle = "#000000";
+        this.context.lineWidth = 1;
         this.context.beginPath();
         for (let y = 0; y <= 0x10; y++) {
             this.context.moveTo(xoff, yoff + y * scale);
@@ -158,6 +166,21 @@ class PianoRoll {
             }
             let texture = entity.GetComponent(Texture);
             let letter = (_a = texture === null || texture === void 0 ? void 0 : texture.letter) !== null && _a !== void 0 ? _a : "?";
+            if (letter == "F") {
+                this.context.fillStyle = "#008000";
+            }
+            else if (letter == "H") {
+                this.context.fillStyle = "#800000";
+            }
+            else if (letter == "T") {
+                this.context.fillStyle = "#808000";
+            }
+            else {
+                this.context.fillStyle = "#FFFFFF";
+            }
+            this.context.strokeStyle = "#000000";
+            this.context.lineWidth = 4;
+            this.context.strokeText(letter, (xoff + 4 + transform.xpos * scale) | 0, (yoff + 26 + transform.ypos * scale) | 0);
             this.context.fillText(letter, (xoff + 4 + transform.xpos * scale) | 0, (yoff + 26 + transform.ypos * scale) | 0);
             // let hitbox = entity.GetComponent(Hitbox);
             // if (hitbox) {

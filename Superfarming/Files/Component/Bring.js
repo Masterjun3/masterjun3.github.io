@@ -53,8 +53,10 @@ export class Bring extends Component {
                         ourTransform.xpos = closestTransform.xpos;
                         ourTransform.ypos = closestTransform.ypos;
                         if (carrying) {
+                            closestTransform.entity.GetComponent(BringTowards).money += 1;
                             this.bringingId = undefined;
                             this.State.RemoveEntity(bringingEntity);
+                            this.State.audio_treasureget.Play();
                             if (this.State.GetComponents(Bringable).filter((bringable) => !bringable.beingBrought).length == 0) {
                                 phase.phase = Phases.Idle;
                             }
