@@ -76,6 +76,7 @@ class PianoRoll {
         }
     }
     updateTouchStart(e) {
+        e.preventDefault();
         if (e.touches.length == 1) {
             let rect = this.canvas.getBoundingClientRect();
             let canvasX = (e.touches[0].clientX - rect.left) * (this.canvas.width / rect.width);
@@ -88,6 +89,7 @@ class PianoRoll {
         }
     }
     updateTouchEnd(e) {
+        e.preventDefault();
         if (e.touches.length == 0) {
             this.input.click = false;
             this.audio_declick.Play();
