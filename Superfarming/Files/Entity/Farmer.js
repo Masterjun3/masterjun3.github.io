@@ -1,6 +1,5 @@
 import { Dig } from "../Component/Dig.js";
 import { Phase } from "../Component/Phase.js";
-import { Move } from "../Component/Move.js";
 import { Texture } from "../Component/Texture.js";
 import { Transform } from "../Component/Transform.js";
 import { Entity } from "../Entity.js";
@@ -12,8 +11,6 @@ export class Farmer extends Entity {
         this.AddComponent(transform);
         let texture = new Texture("F");
         this.AddComponent(texture);
-        let move = new Move();
-        this.AddComponent(move);
         let dig = new Dig();
         this.AddComponent(dig);
         let bring = new Bring();
