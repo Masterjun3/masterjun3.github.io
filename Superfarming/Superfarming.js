@@ -1,14 +1,16 @@
 import { BringTowards } from "./Files/Component/BringTowards.js";
+import { Clickbox, Spawntype } from "./Files/Component/Clickbox.js";
 import { Texture } from "./Files/Component/Texture.js";
 import { Transform } from "./Files/Component/Transform.js";
-import { Farmer } from "./Files/Entity/Farmer.js";
-import { Home } from "./Files/Entity/Home.js";
-import { Spot } from "./Files/Entity/Spot.js";
+import { Spawnbox } from "./Files/Entity/Spawnbox.js";
 import { InputState } from "./Files/InputState.js";
+import { SoundEffect } from "./Files/SoundEffect.js";
 import { State } from "./Files/State.js";
 class PianoRoll {
     constructor() {
         this.imgs = {};
+        this.audio_click = new SoundEffect("Assets/click.wav", 1, 0.05);
+        this.audio_declick = new SoundEffect("Assets/declick.wav", 1, 0.05);
         this.aimedTimeDelta = 1000 / 60;
         this.lastTime = window.performance.now();
         this.state = new State();
@@ -28,6 +30,9 @@ class PianoRoll {
         // for (let i = 0; i<10; i++) {
         //     this.state.AddEntity(new Spot(Math.random()*0x10000, Math.random()*0x10000));
         // }
+        this.state.AddEntity(new Spawnbox(10, 100, 170, 50, Spawntype.Home));
+        this.state.AddEntity(new Spawnbox(10, 160, 170, 50, Spawntype.Spot));
+        this.state.AddEntity(new Spawnbox(10, 220, 170, 50, Spawntype.Farmer));
         this.state.AddToHistory();
         // addEventListener("keydown", (e) => this.updateInputKey(e, true));
         // addEventListener("keyup", (e) => this.updateInputKey(e, false));
@@ -35,32 +40,49 @@ class PianoRoll {
         // this.canvas.addEventListener("touchend", (e) => this.updateInputTouch(e));
         // this.canvas.addEventListener("touchmove", (e) => this.updateInputTouch(e));
         this.canvas.addEventListener("mousedown", (e) => this.updateMouseDown(e));
+        this.canvas.addEventListener("mouseup", (e) => this.updateMouseUp(e));
+        this.canvas.addEventListener("mouseleave", (e) => this.updateMouseLeave(e));
         this.canvas.addEventListener("contextmenu", (e) => { e.preventDefault(); });
+        this.canvas.addEventListener("touchstart", (e) => this.updateTouchStart(e));
+        this.canvas.addEventListener("touchend", (e) => this.updateTouchEnd(e));
         this.redraw();
         this.maybeRedraw(window.performance.now());
     }
+    updateMouseLeave(e) {
+        this.input.click = false;
+    }
+    updateMouseUp(e) {
+        if (e.button == 0) {
+            this.input.click = false;
+            this.audio_declick.Play();
+        }
+    }
     updateMouseDown(e) {
-        let rect = this.canvas.getBoundingClientRect();
-        let xoff = 200;
-        let yoff = 16;
-        let scale = 29;
-        let gridX = Math.floor((e.clientX - rect.left - xoff) / scale);
-        let gridY = Math.floor((e.clientY - rect.top - yoff) / scale);
-        if (gridX >= 0 && gridX < 0x10 && gridY >= 0 && gridY < 0x10) {
-            for (let transform of this.state.GetComponents(Transform)) {
-                if (transform.xpos == gridX && transform.ypos == gridY) {
-                    return;
-                }
-            }
-            if (e.button == 0) {
-                this.state.AddEntity(new Home(gridX, gridY));
-            }
-            else if (e.button == 2) {
-                this.state.AddEntity(new Spot(gridX, gridY));
-            }
-            else if (e.button == 1) {
-                this.state.AddEntity(new Farmer(gridX, gridY));
-            }
+        if (e.button == 0) {
+            let rect = this.canvas.getBoundingClientRect();
+            let canvasX = (e.clientX - rect.left) * (this.canvas.width / rect.width);
+            let canvasY = (e.clientY - rect.top) * (this.canvas.height / rect.height);
+            this.input.click = true;
+            this.input.clickX = canvasX;
+            this.input.clickY = canvasY;
+            this.audio_click.Play();
+        }
+    }
+    updateTouchStart(e) {
+        if (e.touches.length == 1) {
+            let rect = this.canvas.getBoundingClientRect();
+            let canvasX = (e.touches[0].clientX - rect.left) * (this.canvas.width / rect.width);
+            let canvasY = (e.touches[0].clientY - rect.top) * (this.canvas.height / rect.height);
+            this.input.click = true;
+            this.input.clickX = canvasX;
+            this.input.clickY = canvasY;
+            this.audio_click.Play();
+        }
+    }
+    updateTouchEnd(e) {
+        if (e.touches.length == 0) {
+            this.input.click = false;
+            this.audio_declick.Play();
         }
     }
     // private updateInputKey(e: KeyboardEvent, state: boolean) {
@@ -128,16 +150,16 @@ class PianoRoll {
         this.context.fillStyle = "#000000";
         //this.context.fillText(String(this.state.CurrentFrame), 10, 20);
         this.context.font = "14px sans-serif";
-        this.context.fillText("Left-click: (H)ome", 10, 40);
-        this.context.fillText("Right-click: (S)pot for digging", 10, 60);
-        this.context.fillText("Middle-click: (F)armer", 10, 80);
-        this.context.fillText("(T)reasure", 10, 110);
+        // this.context.fillText("Left-click: (H)ome", 10, 40);
+        // this.context.fillText("Right-click: (S)pot for digging", 10, 60);
+        // this.context.fillText("Middle-click: (F)armer", 10, 80);
+        this.context.fillText("(T)reasure", 10, 80);
         let money = 0;
         for (let component of this.state.GetComponents(BringTowards)) {
             money += component.money;
         }
         this.context.font = "18px sans-serif";
-        this.context.fillText(`Money: $${money}`, 10, 140);
+        this.context.fillText(`Money: $${money}`, 10, 50);
         // for (let y = 0; y < 20; y++) {
         //     for (let x = 0; x < 20; x++) {
         //         this.context.fillText(String(x+y), 20+x*16, 20+y*16);
@@ -147,6 +169,7 @@ class PianoRoll {
         let yoff = 16;
         let scale = 29;
         this.context.fillStyle = "#000000";
+        this.context.strokeStyle = "#000000";
         this.context.lineWidth = 1;
         this.context.beginPath();
         for (let y = 0; y <= 0x10; y++) {
@@ -158,30 +181,52 @@ class PianoRoll {
             this.context.lineTo(xoff + x * scale, yoff + 0x10 * scale);
         }
         this.context.stroke();
-        this.context.font = "bold 36px monospace";
-        for (let entity of this.state.entities) {
-            let transform = entity.GetComponent(Transform);
-            if (!transform) {
+        for (let transform of this.state.GetComponents(Transform)) {
+            let texture = transform.entity.GetComponent(Texture);
+            if (texture) {
+                this.context.font = "bold 36px monospace";
+                let letter = (_a = texture.letter) !== null && _a !== void 0 ? _a : "?";
+                if (letter == "F") {
+                    this.context.fillStyle = "#008000";
+                }
+                else if (letter == "H") {
+                    this.context.fillStyle = "#800000";
+                }
+                else if (letter == "T") {
+                    this.context.fillStyle = "#808000";
+                }
+                else {
+                    this.context.fillStyle = "#FFFFFF";
+                }
+                this.context.strokeStyle = "#000000";
+                this.context.lineWidth = 4;
+                this.context.strokeText(letter, (xoff + 4 + transform.xpos * scale) | 0, (yoff + 26 + transform.ypos * scale) | 0);
+                this.context.fillText(letter, (xoff + 4 + transform.xpos * scale) | 0, (yoff + 26 + transform.ypos * scale) | 0);
                 continue;
             }
-            let texture = entity.GetComponent(Texture);
-            let letter = (_a = texture === null || texture === void 0 ? void 0 : texture.letter) !== null && _a !== void 0 ? _a : "?";
-            if (letter == "F") {
-                this.context.fillStyle = "#008000";
+            let clickbox = transform.entity.GetComponent(Clickbox);
+            if (clickbox) {
+                this.context.fillStyle = "#C0C0C0";
+                this.context.strokeStyle = "#000000";
+                this.context.lineWidth = 4;
+                if (clickbox.active) {
+                    this.context.lineWidth = 8;
+                    this.context.fillStyle = "#FFFFFF";
+                    this.context.strokeStyle = "#0000FF";
+                }
+                this.context.strokeRect(transform.xpos, transform.ypos, clickbox.width, clickbox.height);
+                this.context.fillRect(transform.xpos, transform.ypos, clickbox.width, clickbox.height);
+                this.context.font = "18px sans-serif";
+                this.context.fillStyle = "#C0C0C0";
+                this.context.strokeStyle = "#000000";
+                this.context.lineWidth = 4;
+                let text = clickbox.spawntype == Spawntype.Home ? "[H]ome"
+                    : clickbox.spawntype == Spawntype.Spot ? "[S]pot for digging"
+                        : clickbox.spawntype == Spawntype.Farmer ? "[F]armer" : "";
+                this.context.strokeText(text, transform.xpos + 10, transform.ypos + 30);
+                this.context.fillText(text, transform.xpos + 10, transform.ypos + 30);
+                continue;
             }
-            else if (letter == "H") {
-                this.context.fillStyle = "#800000";
-            }
-            else if (letter == "T") {
-                this.context.fillStyle = "#808000";
-            }
-            else {
-                this.context.fillStyle = "#FFFFFF";
-            }
-            this.context.strokeStyle = "#000000";
-            this.context.lineWidth = 4;
-            this.context.strokeText(letter, (xoff + 4 + transform.xpos * scale) | 0, (yoff + 26 + transform.ypos * scale) | 0);
-            this.context.fillText(letter, (xoff + 4 + transform.xpos * scale) | 0, (yoff + 26 + transform.ypos * scale) | 0);
             // let hitbox = entity.GetComponent(Hitbox);
             // if (hitbox) {
             //     this.context.drawImage(

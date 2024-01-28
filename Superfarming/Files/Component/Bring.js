@@ -68,7 +68,7 @@ export class Bring extends Component {
                     }
                 }
             }
-            else {
+            else if (!carrying) {
                 phase.phase = Phases.Idle;
             }
         }
