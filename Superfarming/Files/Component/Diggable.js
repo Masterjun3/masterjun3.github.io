@@ -9,7 +9,6 @@ export class Diggable extends Component {
         for (let i = 0; i < this.digcount; i++) {
             if (Math.random() < 0.1) {
                 this.State.AddEntity(new Treasure((Math.random() * 0x10) | 0, (Math.random() * 0x10) | 0));
-                //this.State.audio_treasureget.volume = 0.5;
                 this.State.audio_treasurespawns[Math.floor(Math.random() * this.State.audio_treasurespawns.length)].Play();
             }
         }

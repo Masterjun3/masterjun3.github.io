@@ -9,8 +9,6 @@ import { State } from "./Files/State.js";
 class PianoRoll {
     constructor() {
         this.imgs = {};
-        this.audio_click = new SoundEffect("Assets/click.wav", 1, 0.05);
-        this.audio_declick = new SoundEffect("Assets/declick.wav", 1, 0.05);
         this.aimedTimeDelta = 1000 / 60;
         this.lastTime = window.performance.now();
         this.state = new State();
@@ -48,6 +46,14 @@ class PianoRoll {
         this.redraw();
         this.maybeRedraw(window.performance.now());
     }
+    assureAudioContext() {
+        if (!this.audioContext) {
+            this.audioContext = new window.AudioContext();
+            this.audio_click = new SoundEffect(this.audioContext, "Assets/click.wav", 0.05);
+            this.audio_declick = new SoundEffect(this.audioContext, "Assets/declick.wav", 0.05);
+            this.state.InitializeAudio(this.audioContext);
+        }
+    }
     updateMouseLeave(e) {
         this.input.click = false;
     }
@@ -65,6 +71,7 @@ class PianoRoll {
             this.input.click = true;
             this.input.clickX = canvasX;
             this.input.clickY = canvasY;
+            this.assureAudioContext();
             this.audio_click.Play();
         }
     }
@@ -76,6 +83,7 @@ class PianoRoll {
             this.input.click = true;
             this.input.clickX = canvasX;
             this.input.clickY = canvasY;
+            this.assureAudioContext();
             this.audio_click.Play();
         }
     }
