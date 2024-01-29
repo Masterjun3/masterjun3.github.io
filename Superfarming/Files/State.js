@@ -5,10 +5,15 @@ export class State {
         this.entities = [];
         this.history = [];
         this.inputHistory = [];
+        this.gainedMoney = 0;
+        this.spentMoney = 0;
     }
     InitializeAudio(context) {
         this.audio_treasurespawns = [new SoundEffect(context, "Assets/treasurespawn_1.wav", 0.3), new SoundEffect(context, "Assets/treasurespawn_2.wav", 0.3), new SoundEffect(context, "Assets/treasurespawn_3.wav", 0.3)];
         this.audio_treasureget = new SoundEffect(context, "Assets/treasureget.wav", 0.02);
+    }
+    get availableMoney() {
+        return this.gainedMoney - this.spentMoney;
     }
     get CurrentFrame() {
         return this.history.length - 1;

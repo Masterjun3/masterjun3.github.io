@@ -1,8 +1,10 @@
-import { BringTowards } from "./Files/Component/BringTowards.js";
 import { Clickbox, Spawntype } from "./Files/Component/Clickbox.js";
 import { Texture } from "./Files/Component/Texture.js";
 import { Transform } from "./Files/Component/Transform.js";
+import { Farmer } from "./Files/Entity/Farmer.js";
+import { Home } from "./Files/Entity/Home.js";
 import { Spawnbox } from "./Files/Entity/Spawnbox.js";
+import { Spot } from "./Files/Entity/Spot.js";
 import { InputState } from "./Files/InputState.js";
 import { SoundEffect } from "./Files/SoundEffect.js";
 import { State } from "./Files/State.js";
@@ -28,9 +30,9 @@ class PianoRoll {
         // for (let i = 0; i<10; i++) {
         //     this.state.AddEntity(new Spot(Math.random()*0x10000, Math.random()*0x10000));
         // }
-        this.state.AddEntity(new Spawnbox(10, 100, 170, 50, Spawntype.Home));
-        this.state.AddEntity(new Spawnbox(10, 160, 170, 50, Spawntype.Spot));
-        this.state.AddEntity(new Spawnbox(10, 220, 170, 50, Spawntype.Farmer));
+        this.state.AddEntity(new Spawnbox(10, 100, 200, 60, Spawntype.Home, 1.2));
+        this.state.AddEntity(new Spawnbox(10, 170, 200, 60, Spawntype.Spot, 1.2));
+        this.state.AddEntity(new Spawnbox(10, 240, 200, 60, Spawntype.Farmer, 1.7));
         this.state.AddToHistory();
         // addEventListener("keydown", (e) => this.updateInputKey(e, true));
         // addEventListener("keyup", (e) => this.updateInputKey(e, false));
@@ -148,14 +150,38 @@ class PianoRoll {
             }
             else {
                 this.state.Update(this.input);
+                if (this.startGameFrame == undefined) {
+                    if (this.state.GetComponents(Clickbox).filter(clickbox => clickbox.cost == 0).length == 0) {
+                        this.startGameFrame = this.state.CurrentFrame;
+                    }
+                }
+                if (this.stopGameFrame == undefined) {
+                    if (this.state.gainedMoney >= 1000) {
+                        this.stopGameFrame = this.state.CurrentFrame;
+                    }
+                }
             }
             this.redraw();
         }
+    }
+    formatTime(seconds) {
+        const flooredSeconds = Math.floor(seconds);
+        const minutes = Math.floor(flooredSeconds / 60);
+        const remainingSeconds = flooredSeconds % 60;
+        return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    }
+    formatTimePreciser(seconds) {
+        const centiSeconds = Math.floor(seconds * 100);
+        const onlyCentiseconds = centiSeconds % 100;
+        const flooredSeconds = Math.floor(centiSeconds / 100) % 60;
+        const minutes = Math.floor(centiSeconds / (60 * 100));
+        return `${minutes}:${flooredSeconds < 10 ? '0' : ''}${flooredSeconds}.${onlyCentiseconds < 10 ? '0' : ''}${onlyCentiseconds}`;
     }
     redraw() {
         var _a;
         this.context.fillStyle = "#6495ED";
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.context.miterLimit = 1;
         this.context.font = "18px sans-serif";
         this.context.fillStyle = "#000000";
         //this.context.fillText(String(this.state.CurrentFrame), 10, 20);
@@ -163,19 +189,50 @@ class PianoRoll {
         // this.context.fillText("Left-click: (H)ome", 10, 40);
         // this.context.fillText("Right-click: (S)pot for digging", 10, 60);
         // this.context.fillText("Middle-click: (F)armer", 10, 80);
-        this.context.fillText("(T)reasure", 10, 80);
-        let money = 0;
-        for (let component of this.state.GetComponents(BringTowards)) {
-            money += component.money;
-        }
+        this.context.fillText("[T]reasure is worth $1", 10, 330);
         this.context.font = "18px sans-serif";
-        this.context.fillText(`Money: $${money}`, 10, 50);
+        this.context.fillText(`Money: $${this.state.availableMoney}`, 10, 50);
+        this.context.font = "14px sans-serif";
+        this.context.fillText(`Total: $${this.state.gainedMoney}`, 10, 70);
+        this.context.strokeStyle = "#202020";
+        this.context.lineWidth = 5;
+        if (this.startGameFrame != undefined) {
+            let text;
+            if (this.stopGameFrame != undefined) {
+                this.context.fillStyle = "#FFFFFF";
+                text = `You reached $1000 in`;
+                this.context.strokeText(text, 10, 400);
+                this.context.fillText(text, 10, 400);
+                this.context.fillStyle = "#00FF00";
+                text = this.formatTimePreciser(((this.stopGameFrame - this.startGameFrame) * this.aimedTimeDelta) / 1000);
+                this.context.strokeText(text, 10, 420);
+                this.context.fillText(text, 10, 420);
+                this.context.fillStyle = "#FFFFFF";
+                text = `Congratulations!`;
+                this.context.strokeText(text, 10, 450);
+                this.context.fillText(text, 10, 450);
+                this.context.fillStyle = "#C0C0C0";
+                text = "Total Playtime: ";
+                text += this.formatTime(((this.state.CurrentFrame - this.startGameFrame) * this.aimedTimeDelta) / 1000);
+                this.context.strokeText(text, 10, 480);
+                this.context.fillText(text, 10, 480);
+            }
+            else {
+                this.context.fillStyle = "#C0C0C0";
+                text = `Try to reach $1000 (${Math.floor(this.state.gainedMoney / 10)}%)`;
+                this.context.strokeText(text, 10, 400);
+                this.context.fillText(text, 10, 400);
+                text = this.formatTime(((this.state.CurrentFrame - this.startGameFrame) * this.aimedTimeDelta) / 1000);
+                this.context.strokeText(text, 10, 420);
+                this.context.fillText(text, 10, 420);
+            }
+        }
         // for (let y = 0; y < 20; y++) {
         //     for (let x = 0; x < 20; x++) {
         //         this.context.fillText(String(x+y), 20+x*16, 20+y*16);
         //     }
         // }
-        let xoff = 200;
+        let xoff = 240;
         let yoff = 16;
         let scale = 29;
         this.context.fillStyle = "#000000";
@@ -216,25 +273,47 @@ class PianoRoll {
             }
             let clickbox = transform.entity.GetComponent(Clickbox);
             if (clickbox) {
-                this.context.fillStyle = "#C0C0C0";
+                this.context.fillStyle = "#A0A0A0";
                 this.context.strokeStyle = "#000000";
                 this.context.lineWidth = 4;
+                if (clickbox.canSpawn) {
+                    this.context.fillStyle = "#D0D0D0";
+                }
                 if (clickbox.active) {
-                    this.context.lineWidth = 8;
-                    this.context.fillStyle = "#FFFFFF";
-                    this.context.strokeStyle = "#0000FF";
+                    if (clickbox.canSpawn) {
+                        this.context.lineWidth = 8;
+                        this.context.fillStyle = "#FFFFFF";
+                        this.context.strokeStyle = "#00A000";
+                    }
+                    else {
+                        this.context.strokeStyle = "#C00000";
+                    }
                 }
                 this.context.strokeRect(transform.xpos, transform.ypos, clickbox.width, clickbox.height);
                 this.context.fillRect(transform.xpos, transform.ypos, clickbox.width, clickbox.height);
                 this.context.font = "18px sans-serif";
-                this.context.fillStyle = "#C0C0C0";
                 this.context.strokeStyle = "#000000";
                 this.context.lineWidth = 4;
                 let text = clickbox.spawntype == Spawntype.Home ? "[H]ome"
                     : clickbox.spawntype == Spawntype.Spot ? "[S]pot for digging"
                         : clickbox.spawntype == Spawntype.Farmer ? "[F]armer" : "";
+                let type = clickbox.spawntype == Spawntype.Home ? Home
+                    : clickbox.spawntype == Spawntype.Spot ? Spot
+                        : clickbox.spawntype == Spawntype.Farmer ? Farmer : undefined;
+                let count = this.state.entities.filter(entity => entity instanceof type).length;
+                if (count > 0) {
+                    text += ` (${count})`;
+                }
                 this.context.strokeText(text, transform.xpos + 10, transform.ypos + 30);
                 this.context.fillText(text, transform.xpos + 10, transform.ypos + 30);
+                this.context.font = "14px sans-serif";
+                this.context.lineWidth = 3;
+                text = `Cost: $${clickbox.cost}`;
+                if (clickbox.cost == clickbox.costMax) {
+                    text += " (max)";
+                }
+                this.context.strokeText(text, transform.xpos + 15, transform.ypos + 50);
+                this.context.fillText(text, transform.xpos + 15, transform.ypos + 50);
                 continue;
             }
             // let hitbox = entity.GetComponent(Hitbox);
