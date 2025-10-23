@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Movie Diff</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />
+  <style>@import url(http://fonts.googleapis.com/css?family=Inconsolata);@import url(http://fonts.googleapis.com/css?family=PT+Sans);@import url(http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700);article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary{display:block}audio,canvas,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden]{display:none}html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}body{margin:0}a:focus{outline:thin dotted}a:active,a:hover{outline:0}h1{font-size:2em}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}dfn{font-style:italic}mark{background:#ff0;color:#000}code,kbd,pre,samp{font-family:monospace,serif;font-size:1em}pre{white-space:pre-wrap;word-wrap:break-word}q{quotes:"\201C" "\201D" "\2018" "\2019"}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:0}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0}button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}button,input{line-height:normal}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],input[disabled]{cursor:default}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}textarea{overflow:auto;vertical-align:top}table{border-collapse:collapse;border-spacing:0}html{font-family:'PT Sans',sans-serif}pre,code{font-family:'Inconsolata',sans-serif}h1,h2,h3,h4,h5,h6{font-family:'PT Sans Narrow',sans-serif;font-weight:700}html{background-color:#073642;color:#839496;margin:1em}body{background-color:#002b36;margin:0 auto;max-width:23cm;border:1pt solid #586e75;padding:1em}code{background-color:#073642;padding:2px}a{color:#b58900}a:visited{color:#cb4b16}a:hover{color:#cb4b16}h1{color:#d33682}h2,h3,h4,h5,h6{color:#859900}pre{background-color:#002b36;color:#839496;border:1pt solid #586e75;padding:1em;box-shadow:5pt 5pt 8pt #073642}pre code{background-color:#002b36}h1{font-size:2.8em}h2{font-size:2.4em}h3{font-size:1.8em}h4{font-size:1.4em}h5{font-size:1.3em}h6{font-size:1.15em}.tag{background-color:#073642;color:#d33682;padding:0 .2em}.todo,.next,.done{color:#002b36;background-color:#dc322f;padding:0 .2em}.tag{-webkit-border-radius:.35em;-moz-border-radius:.35em;border-radius:.35em}.TODO{-webkit-border-radius:.2em;-moz-border-radius:.2em;border-radius:.2em;background-color:#2aa198}.NEXT{-webkit-border-radius:.2em;-moz-border-radius:.2em;border-radius:.2em;background-color:#268bd2}.ACTIVE{-webkit-border-radius:.2em;-moz-border-radius:.2em;border-radius:.2em;background-color:#268bd2}.DONE{-webkit-border-radius:.2em;-moz-border-radius:.2em;border-radius:.2em;background-color:#859900}.WAITING{-webkit-border-radius:.2em;-moz-border-radius:.2em;border-radius:.2em;background-color:#cb4b16}.HOLD{-webkit-border-radius:.2em;-moz-border-radius:.2em;border-radius:.2em;background-color:#d33682}.NOTE{-webkit-border-radius:.2em;-moz-border-radius:.2em;border-radius:.2em;background-color:#d33682}.CANCELLED{-webkit-border-radius:.2em;-moz-border-radius:.2em;border-radius:.2em;background-color:#859900}</style>
+  <style>
+    body {
+      max-width: unset;
+      display: flex;
+      flex-direction: column;
+      border: none;
+    }
+  
+    h1 {
+      font-size: 20px;
+      margin: 0 0 12px
+    }
+  
+    .panel {
+      flex: 1;
+      border: 1px solid #6a6a6a;
+      border-radius: 8px;
+      padding: 12px
+    }
+  
+    label {
+      display: block;
+      font-size: 15px;
+    }
+  
+    .meta {
+      font-size: 13px;
+      margin-top: 8px
+    }
+  
+    .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin: 12px 0
+    }
+  
+    .btn {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #6a6a6a;
+      cursor: pointer
+    }
+  
+    .btn.primary {
+      background: #0366d6;
+      color: white;
+      border-color: rgba(0, 0, 0, 0.05)
+    }
+  
+    .status {
+      font-size: 13px
+    }
+
+    .fileLabel {
+      margin-bottom: 4px;
+    }
+
+    .files {
+      display: flex;
+      gap: 12px;
+      width: fit-content
+    }
+  </style>
+  </head>
+  
+  <body>
+    <h1>Movie Diff</h1>
+    <div class="files">
+      <div class="panel" id="leftPanel">
+        <label for="leftZip" class="fileLabel">Old Movie</label>
+        <input id="leftZip" type="file" accept=".bk2" />
+      </div>
+  
+      <div class="panel" id="rightPanel">
+        <label for="rightZip" class="fileLabel">New Movie</label>
+        <input id="rightZip" type="file" accept=".bk2" />
+      </div>
+    </div>
+  
+    <div class="controls">
+      <button id="renderBtn" class="btn primary">Render diff</button>
+      <label class="btn" style="display:flex;gap:8px;align-items:center"><input id="viewToggle" type="checkbox"
+          checked="true" /> Split view</label>
+    </div>
+    <div class="status" id="status">Waiting for files...</div>
+  
+    <div id="diffContainer" class="panel" style="min-height:220px"></div>
+  
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/diff@5.1.0/dist/diff.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html.min.js"></script>
+  
+    <script>
+      async function extractInputLogFromZip(file) {
+        if (!file) return { error: 'No file' };
+        try {
+          const arrayBuffer = await file.arrayBuffer();
+          const zip = await JSZip.loadAsync(arrayBuffer);
+          const candidates = [];
+          zip.forEach((relativePath, zipEntry) => {
+            const name = relativePath.replace(/^\/+|^\.\//, '');
+            if (name.toLowerCase() === 'input log.txt'.toLowerCase()) candidates.push(zipEntry);
+          });
+          if (candidates.length === 0) {
+            zip.forEach((relativePath, zipEntry) => {
+              const parts = relativePath.split('/');
+              const base = parts[parts.length - 1];
+              if (base.toLowerCase() === 'input log.txt'.toLowerCase()) candidates.push(zipEntry);
+            });
+          }
+          if (candidates.length === 0) return { error: 'Input Log.txt not found in the movie' };
+          const entry = candidates[0];
+          const text = await entry.async('text');
+          return { text, name: entry.name };
+        } catch (e) {
+          return { error: 'Failed to read movie: ' + (e && e.message ? e.message : e) };
+        }
+      }
+
+      const leftInput = document.getElementById('leftZip');
+      const rightInput = document.getElementById('rightZip');
+      const leftMeta = document.getElementById('leftMeta');
+      const rightMeta = document.getElementById('rightMeta');
+      const status = document.getElementById('status');
+      const renderBtn = document.getElementById('renderBtn');
+      const diffContainer = document.getElementById('diffContainer');
+      const viewToggle = document.getElementById('viewToggle');
+
+      let leftFile, rightFile, leftText, rightText;
+
+      leftInput.addEventListener('change', async (e) => {
+        leftFile = e.target.files[0];
+        if (leftFile && rightFile) {
+          status.textContent = 'Ready';
+        }
+      });
+      rightInput.addEventListener('change', async (e) => {
+        rightFile = e.target.files[0];
+        if (leftFile && rightFile) {
+          status.textContent = 'Ready';
+        }
+      });
+
+      async function prepareAndRender() {
+        status.textContent = 'Reading movies...';
+        diffContainer.innerHTML = '';
+
+        const leftRes = await extractInputLogFromZip(leftFile);
+        if (leftRes.error) {
+          status.textContent = 'Old Movie: ' + leftRes.error;
+          return;
+        }
+        leftText = leftRes.text;
+
+        const rightRes = await extractInputLogFromZip(rightFile);
+        if (rightRes.error) {
+          status.textContent = 'New Movie: ' + rightRes.error;
+          return;
+        }
+        rightText = rightRes.text;
+
+        status.textContent = 'Computing diff...';
+
+        const leftName = leftFile ? leftFile.name : 'left';
+        const rightName = rightFile ? rightFile.name : 'right';
+        const patch = Diff.createTwoFilesPatch(leftName + '/Input Log.txt', rightName + '/Input Log.txt', leftText, rightText, '', '', { context: 3 });
+
+        const outputFormat = viewToggle.checked ? 'side-by-side' : 'line-by-line';
+        const diffHtml = Diff2Html.html(patch, { drawFileList: false, matching: 'lines', colorScheme: 'dark', outputFormat });
+        diffContainer.innerHTML = diffHtml;
+
+        status.textContent = 'Rendered';
+      }
+
+      renderBtn.addEventListener('click', async () => {
+        if (!leftFile || !rightFile) {
+          status.textContent = 'Select both movie files first.';
+          return;
+        }
+        await prepareAndRender();
+      });
+
+      viewToggle.addEventListener('change', () => {
+        if (!leftText || !rightText) return;
+        const leftName = leftFile ? leftFile.name : 'left';
+        const rightName = rightFile ? rightFile.name : 'right';
+        const patch = Diff.createTwoFilesPatch(leftName + '/Input Log.txt', rightName + '/Input Log.txt', leftText, rightText, '', '', { context: 3 });
+        const outputFormat = viewToggle.checked ? 'side-by-side' : 'line-by-line';
+        const diffHtml = Diff2Html.html(patch, { drawFileList: false, matching: 'lines', colorScheme: 'dark', outputFormat });
+        diffContainer.innerHTML = diffHtml;
+
+        status.textContent = 'Rendered';
+      });
+
+      function setupDrop(panelEl, inputEl, metaEl) {
+        panelEl.addEventListener('dragover', (e) => { e.preventDefault(); panelEl.style.borderColor = '#bbb'; });
+        panelEl.addEventListener('dragleave', () => { panelEl.style.borderColor = ''; });
+        panelEl.addEventListener('drop', (e) => {
+          e.preventDefault(); panelEl.style.borderColor = '';
+          const f = e.dataTransfer.files[0];
+          if (f) { inputEl.files = e.dataTransfer.files; inputEl.dispatchEvent(new Event('change')); }
+        });
+      }
+      setupDrop(document.getElementById('leftPanel'), leftInput, leftMeta);
+      setupDrop(document.getElementById('rightPanel'), rightInput, rightMeta);
+
+      status.textContent = 'Select two movie files.';
+    </script>
+  </body>
+  
+  </html>
