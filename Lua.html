@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <link rel="shortcut icon" type="image/png" href="favicon.png"/>
@@ -31,14 +32,14 @@ div.title {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Masterjun | Lua</title>
 </head>
-<body onload="run();">
+<body onload="handleChange();" style="overflow-y: scroll;">
 <a href=".">&lt Back</a><br>
 <div class="title">
 <h2>Lua</h2>
 </div>
 <hr>
 <div class="code">
-<textarea id="code" oninput="run();">
+<textarea id="code" oninput="handleChange();">
 print(_VERSION)
 
 for i=1,10 do
@@ -49,10 +50,11 @@ end
 <hr>
 <div>
 <pre id="out">
-hi
+Initializing...
 </pre>
 </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/he/1.2.0/he.min.js" integrity="sha512-PEsccDx9jqX6Dh4wZDCnWMaIO3gAaU0j46W//sSqQhUQxky6/eHZyeB3NrXD2xsyugAKd4KPiDANkcuoEa2JuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="Lua.js"></script>
-<script src="fengari-web.js"></script>
+<script src="Luawasm.js"></script>
 </html>
