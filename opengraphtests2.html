@@ -1,0 +1,172 @@
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/png" href="favicon.png" />
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(#87CEEB, #FFE0B2);
+      background-repeat: no-repeat;
+      background-color: #FFE0B2;
+      background-size: 100% 1000px;
+      margin: auto;
+      max-width: 700px;
+      padding: 10px 10px;
+      border-left: 1px solid #C0C0C0;
+      border-right: 1px solid #C0C0C0;
+      font-size: 16px;
+    }
+
+    div.div1 {
+      text-align: center;
+    }
+  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Masterjun | Open Graph Tests</title>
+  <meta property="og:site_name" content="TASVideos" />
+  <meta property="og:title" content="#4156: Masterjun's SNES Super Mario World &quot;arbitrary code execution, playaround&quot; in 02:25.19" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tasvideos.org/4156S" />
+  <meta property="og:image" content="https://i.ytimg.com/vi/OPcV9uIY5i4/hqdefault.jpg" />
+  <meta property="og:description" content="Submission #4156 from 2014-01-06" />
+  <meta property="og:video:url" content="https://www.youtube.com/embed/OPcV9uIY5i4">
+  <meta property="og:video:secure_url" content="https://www.youtube.com/embed/OPcV9uIY5i4">
+  <meta property="og:video:type" content="text/html">
+  <meta property="og:video:width" content="960">
+  <meta property="og:video:height" content="720">
+</head>
+
+<body>
+  <a href=".">&lt Back</a><br>
+  <div class="div1">
+    <h1>Open Graph Tests</h1>
+    <table>
+      <tr>
+        <td><span>Site Name:</span></td>
+        <td><input id="input_sitename" oninput="change()" style="width: 63.5ch;" /></td>
+      </tr>
+      <tr>
+        <td><span>Title:</span></td>
+        <td><input id="input_title" oninput="change()" style="width: 63.5ch;" /></td>
+      </tr>
+      <tr>
+        <td><span>Description:</span></td>
+        <td><textarea id="input_description" oninput="change()" cols="60" rows="6"></textarea></td>
+      </tr>
+      <tr>
+        <td><span>Image:</span></td>
+        <td><input id="input_image" oninput="change()" style="width: 63.5ch;" /></td>
+      </tr>
+    </table>
+    <style>
+      .container {
+        background-color: #313338;
+        padding: 78px;
+      }
+
+      .grid {
+        text-align: left;
+        display: grid;
+        padding: .5rem 1rem 1rem .75rem;
+        color: rgb(219, 222, 225);
+        background-color: rgb(43, 45, 49);
+        max-width: 516px;
+        border-radius: 4px;
+      }
+
+      .gridelement {
+        margin-top: 8px;
+      }
+
+      .sitename {
+        grid-column: 1/1;
+        font-size: 0.75rem;
+        font-weight: 400;
+      }
+
+      .title {
+        grid-column: 1/1;
+        color: rgb(0, 168, 252);
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .title:not(:hover) {
+        text-decoration: none;
+      }
+
+      .description {
+        grid-column: 1/1;
+        font-size: 0.875rem;
+        font-weight: 400;
+      }
+
+      .image {
+        grid-row: 1/8;
+        grid-column: 2/2;
+        margin-left: 16px;
+      }
+    </style>
+    <div class="container">
+      <div class="grid">
+        <div class="gridelement sitename"><span id="sitename"></span></div>
+        <div class="gridelement"><a class="title" href="#" id="title"></a></div>
+        <div class="gridelement description"><span id="description"></span></div>
+        <div class="gridelement image"><img style="width: 80px; cursor: pointer;" id="image" /></div>
+      </div>
+    </div>
+    <script>
+      let input_sitename = document.getElementById('input_sitename');
+      let input_title = document.getElementById('input_title');
+      let input_description = document.getElementById('input_description');
+      let input_image = document.getElementById('input_image');
+      let sitename = document.getElementById('sitename');
+      let title = document.getElementById('title');
+      let description = document.getElementById('description');
+      let image = document.getElementById('image');
+      function toBase64(s) {
+        return btoa(Array.from(new TextEncoder().encode(s), (x) => String.fromCodePoint(x)).join("")).replaceAll("=", "").replaceAll("+", "-").replaceAll("/", "_");
+      }
+      function fromBase64(s) {
+        return new TextDecoder().decode(Uint8Array.from(atob(s.replaceAll("-", "+").replaceAll("_", "/")), (m) => m.codePointAt(0)));
+      }
+      function change() {
+        sitename.innerText = input_sitename.value;
+        title.innerText = input_title.value;
+        description.innerText = input_description.value;
+        image.src = input_image.value;
+        if (title.innerText.length > 60) {
+          title.innerText = title.innerText.substring(0, 60 - 3) + "...";
+        }
+        if (description.innerText.length > 350) {
+          description.innerText = description.innerText.substring(0, 350 - 3) + "...";
+        }
+        let query = [input_sitename.value, input_title.value, input_description.value, input_image.value];
+        let url = new URL(window.location);
+        url.searchParams.set("q", toBase64(JSON.stringify(query)));
+        window.history.replaceState({}, null, url);
+      }
+      function fill() {
+        let url = new URL(window.location);
+        let q = url.searchParams.get("q");
+        if (q) {
+          query = JSON.parse(fromBase64(q));
+          input_sitename.value = query[0];
+          input_title.value = query[1];
+          input_description.value = query[2];
+          input_image.value = query[3];
+        } else {
+          input_sitename.value = "TASVideos";
+          input_title.value = "Post by Masterjun";
+          input_description.value = "Encoders' corner → [Guide] Creating a quick HD encode in BizHawk";
+          input_image.value = "https://i.imgur.com/xljvuh5.png";
+        }
+        change();
+      }
+      fill();
+    </script>
+  </div>
+</body>
+
+</html>
