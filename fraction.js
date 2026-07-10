@@ -74,6 +74,10 @@ function addLine(p,q,pdq){
     " &#8773; "+pdq+"<br>";
 }
 function addFracLine(contFrac){
+  var pq = getPQ(contFrac);
+  addLine(pq[0],pq[1],pq[0]/pq[1]);
+}
+function getPQ(contFrac){
   var p = "0";
   var q = "1";
   for(var i=contFrac.length-1; i>=0; i--){
@@ -83,7 +87,16 @@ function addFracLine(contFrac){
     p = q;
     q = cur;
   }
-  addLine(q,p,q/p);
+  return [q,p];
+}
+function isBetter(p1,q1,p2,q2,a,b){
+  var aq1 = mulStrInt(a,q1);
+  var bp1 = mulStrInt(b,p1);
+  var d1 = lessThan(aq1,bp1) ? subStrInt(bp1,aq1) : subStrInt(aq1,bp1);
+  var aq2 = mulStrInt(a,q2);
+  var bp2 = mulStrInt(b,p2);
+  var d2 = lessThan(aq2,bp2) ? subStrInt(bp2,aq2) : subStrInt(aq2,bp2);
+  return lessThan(mulStrInt(d1,q2), mulStrInt(d2,q1));
 }
 
 function addContLine(contFrac){
@@ -122,14 +135,32 @@ function approxFrac(){
   }
   
   
+  var origA = a;
+  var origB = b;
   var contFrac = [];
   var fract;
+  var step = 0;
   do{
     fract = divStrInt(a,b);
-    contFrac.push(fract[0]);
-    addFracLine(contFrac);
+    var cur = fract[0];
+    if(step == 0){
+      contFrac.push(cur);
+      addFracLine(contFrac);
+    }else{
+      var start = divStrInt(addStrInt(cur,"1"),"2")[0];
+      for(var k=start; lessThan(k,cur) || k==cur; k=addStrInt(k,"1")){
+        if(k==start && divStrInt(cur,"2")[1]=="0"){
+          var pq1 = getPQ(contFrac.concat([k]));
+          var pq2 = getPQ(contFrac);
+          if(!isBetter(pq1[0],pq1[1],pq2[0],pq2[1],origA,origB)){ continue; }
+        }
+        addFracLine(contFrac.concat([k]));
+      }
+      contFrac.push(cur);
+    }
     a=b;
     b=fract[1];
+    step++;
   }while(fract[1]!="0");
   
   addContLine("["+contFrac.toString().replace(",",";")+"]",1,0);
